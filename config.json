@@ -1,0 +1,12 @@
+{
+    "prefix": ".",
+    "activity": "Vitality OP",
+    "game": {
+        "doublePlaystylePenalty": 10,
+        "triplePlaystylePenalty": 30,
+        "shotChance": 0.028,
+        "minShotChance": 0.004,
+        "ratingDiffMultiplier": 0.00005,
+        "gameLength": 299
+    }
+}
