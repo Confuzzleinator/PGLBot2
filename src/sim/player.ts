@@ -5,6 +5,10 @@ export default class Player {
     goals: number
     assists: number
     saves: number
+    shots: number
+    scoringChance: number
+    assistingChance: number
+    savingChance: number
 
     constructor(name: string, rating: number, playstyle: number) {
         this.name = name
@@ -13,5 +17,9 @@ export default class Player {
         this.goals = 0
         this.assists = 0
         this.saves = 0
+        this.shots = 0
+        this.scoringChance = 0
+        this.assistingChance = 0
+        this.savingChance = 0
     }
 }

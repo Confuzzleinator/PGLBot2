@@ -1,7 +1,9 @@
-import { Message } from "discord.js";
+import { Message, TextChannel } from "discord.js";
+import DiscordOutput from "../discordOutput";
 import Game from "../sim/game";
 import Player from "../sim/player";
 import Team from "../sim/team";
+import TeamFactory from "../sim/teamFactory";
 import ICommand from "./command";
 
 export default class SimCommand implements ICommand {
@@ -12,12 +14,22 @@ export default class SimCommand implements ICommand {
     minArgs = 2
 
     execute(message: Message, args: string[]) {
-        let t1 = new Team('Golden Guardians', 'GG', 
-            [new Player('A', 80, 0), new Player('B', 90, 1), new Player('C', 100, 2)], '', '')
-        let t2 = new Team('100 Thieves', '100', 
-            [new Player('D', 80, 0), new Player('E', 90, 1), new Player('F', 100, 2)], '', '')
+        let factory = new TeamFactory()
+        let t1 = factory.create('Ghost Gaming', 'GG', message.guild, 
+            [new Player('A', 80, 0), new Player('B', 90, 1), new Player('C', 100, 2)])
+
+        let t2 = factory.create('Echo Fox', 'EF', message.guild,
+            [new Player('D', 80, 0), new Player('E', 90, 1), new Player('F', 100, 2)])
+
+        if(t1.emoji === 'undefined') return message.channel.send("Couldn't find an emoji for " + t1.abbrev)
+        if(t1.role === 'undefined') return message.channel.send("Couldn't find a role for " + t1.name)
+        if(t2.emoji === 'undefined') return message.channel.send("Couldn't find an emoji for " + t2.abbrev)
+        if(t2.role === 'undefined') return message.channel.send("Couldn't find a role for " + t2.name)
+        
         let game = new Game(t1, t2)
         game.sim()
+        let output = new DiscordOutput()
+        output.outputAtInterval(message.channel as TextChannel, game.events, parseInt(args[2]))
     }
 
 }

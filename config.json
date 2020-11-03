@@ -6,7 +6,13 @@
         "triplePlaystylePenalty": 30,
         "shotChance": 0.028,
         "minShotChance": 0.004,
+        "scoreChance": 0.25,
+        "saveChance": 0.75,
+        "assistChance": 0.5,
         "ratingDiffMultiplier": 0.00005,
-        "gameLength": 299
+        "gameLength": 299,
+        "strikerActionProbabilities": [0.1, -0.1, 0],
+        "guardianActionProbabilities": [-0.1, 0, 0.1],
+        "playmakerActionProbabilities": [0, 0.1, -0.1]
     }
 }
