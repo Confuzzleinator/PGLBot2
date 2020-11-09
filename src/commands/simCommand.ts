@@ -1,8 +1,7 @@
 import { Message, TextChannel } from "discord.js";
 import DiscordOutput from "../discordOutput";
-import Game from "../sim/game";
 import Player from "../sim/player";
-import Team from "../sim/team";
+import Series from "../sim/series";
 import TeamFactory from "../sim/teamFactory";
 import ICommand from "./command";
 
@@ -25,11 +24,11 @@ export default class SimCommand implements ICommand {
         if(t1.role === 'undefined') return message.channel.send("Couldn't find a role for " + t1.name)
         if(t2.emoji === 'undefined') return message.channel.send("Couldn't find an emoji for " + t2.abbrev)
         if(t2.role === 'undefined') return message.channel.send("Couldn't find a role for " + t2.name)
-        
-        let game = new Game(t1, t2)
-        game.sim()
+
+        let series = new Series(t1, t2, parseInt(args[2]))
+        series.sim()
         let output = new DiscordOutput()
-        output.outputAtInterval(message.channel as TextChannel, game.events, parseInt(args[2]))
+        output.outputAtInterval(message.channel as TextChannel, series.events, parseInt(args[3]))
     }
 
 }

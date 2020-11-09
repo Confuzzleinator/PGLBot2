@@ -1,5 +1,6 @@
 import Player from "./player"
 import { game } from '../../config.json' 
+import GameStats from "./gameStats"
 
 export default class Team {
     name: string
@@ -7,10 +8,7 @@ export default class Team {
     players: Player[]
     emoji: string
     role: string
-    goals: number
-    shots: number
-    assists: number
-    saves: number
+    stats: GameStats
     rating: number
     scoringChances: number[]
 
@@ -20,11 +18,8 @@ export default class Team {
         this.players = players
         this.emoji = emoji
         this.role = role
-        this.goals = 0
-        this.shots = 0
-        this.assists = 0
-        this.saves = 0
         this.rating = 0
+        this.stats = new GameStats()
 
         // Calculate team overall rating, factoring in position penalties
         for(let i = 0; i < this.players.length; ++i) {

@@ -4,8 +4,11 @@ import { game } from '../../config.json'
 import ScoreEvent from './events/scoreEvent';
 import SaveEvent from './events/saveEvent';
 import MissEvent from './events/missEvent';
-import { type } from 'os';
 import OvertimeEvent from './events/overtimeEvent';
+import GameResultEvent from './events/gameResultEvent';
+import GameResult from './gameResult';
+import TeamResult from './teamResult';
+import PlayerResult from './playerResult';
 
 export default class Game {
     t1: Team
@@ -18,7 +21,9 @@ export default class Game {
         this.events = []
     }
 
-    sim() : void {
+    sim() : GameResult {
+        
+
         let t1Odds = game.shotChance + (this.t1.rating - this.t2.rating) * game.ratingDiffMultiplier
         let t2Odds = game.shotChance + (this.t2.rating - this.t1.rating) * game.ratingDiffMultiplier
 
@@ -34,7 +39,7 @@ export default class Game {
                 this.shoot(this.t2, this.t1, time, time < 0 ? true : false)
             }
 
-            if(time <= 0 && this.t1.goals != this.t2.goals) {
+            if(time <= 0 && this.t1.stats.goals != this.t2.stats.goals) {
                 simming = false
             } else if (time == 0) {
                 this.events.push(new OvertimeEvent())
@@ -42,6 +47,13 @@ export default class Game {
 
             --time
         }
+        this.events.push(new GameResultEvent(this.t1, this.t2))
+
+        // Create results object and return it
+        let t1Result = new TeamResult(this.t1, [new PlayerResult(this.t1.players[0]), new PlayerResult(this.t1.players[1]), new PlayerResult(this.t1.players[2])])
+        let t2Result = new TeamResult(this.t2, [new PlayerResult(this.t2.players[0]), new PlayerResult(this.t2.players[1]), new PlayerResult(this.t2.players[2])])
+
+        return new GameResult(t1Result, t2Result)
     }
 
     doesScore() : boolean {
@@ -57,7 +69,7 @@ export default class Game {
     }
 
     shoot(attackTeam: Team, defenseTeam: Team, time: number, overtime: boolean) {
-        attackTeam.shots++
+        attackTeam.stats.shots++
         if(this.doesScore()) {
             this.score(attackTeam, time, overtime)
         } else {
@@ -70,14 +82,14 @@ export default class Game {
     }
 
     score(team: Team, time: number, overtime: boolean) {
-        team.goals++
+        team.stats.goals++
         let p = team.getScoringPlayer()
-        p.goals++
-        p.shots++
+        p.stats.goals++
+        p.stats.shots++
         if(this.doesAssist()) {
-            team.assists++
+            team.stats.assists++
             let assister = team.getAssistingPlayer(p)
-            assister.assists++
+            assister.stats.assists++
             this.events.push(new ScoreEvent(this.formatTime(time), team, p, overtime, assister))
         } else {
             this.events.push(new ScoreEvent(this.formatTime(time), team, p, overtime))
@@ -85,17 +97,17 @@ export default class Game {
     }
 
     save(saveTeam: Team, shotTeam: Team, time: number, overtime: boolean) {
-        saveTeam.saves++
+        saveTeam.stats.saves++
         let saver = saveTeam.getSavingPlayer()
-        saver.saves++
+        saver.stats.saves++
         let shooter = shotTeam.getScoringPlayer()
-        shooter.shots++
+        shooter.stats.shots++
         this.events.push(new SaveEvent(this.formatTime(time), saveTeam, saver, shooter, overtime))
     }
 
     miss(team: Team, time: number, overtime: boolean) {
         let p = team.getScoringPlayer()
-        p.shots++
+        p.stats.shots++
         this.events.push(new MissEvent(this.formatTime(time), team, p, overtime))
     }
 
