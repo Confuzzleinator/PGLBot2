@@ -40,6 +40,10 @@ export default class Team {
                 this.players[i].scoringChance = this.players[i].rating + (game.playmakerActionProbabilities[0] * this.rating)
                 this.players[i].assistingChance = this.players[i].rating + (game.playmakerActionProbabilities[1] * this.rating)
                 this.players[i].savingChance = this.players[i].rating + (game.strikerActionProbabilities[2] * this.rating)
+            } else {
+                this.players[i].scoringChance = this.players[i].rating
+                this.players[i].assistingChance = this.players[i].rating
+                this.players[i].savingChance = this.players[i].rating
             }
         }
 
@@ -62,7 +66,9 @@ export default class Team {
 
     getScoringPlayer() : Player {
         let totalScoringChance = 0
-        for(let player of this.players) totalScoringChance += player.scoringChance
+        for(let player of this.players) {
+            totalScoringChance += player.scoringChance
+        }
         let rand = Math.random() * totalScoringChance
         let total = 0
         for(let player of this.players) {

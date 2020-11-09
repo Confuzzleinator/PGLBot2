@@ -5,7 +5,7 @@ export default class SeriesEvent implements IEvent {
     event = ''
     important = true
 
-    constructor(t1: Team, t2: Team) {
-        this.event += t1.emoji + ' vs ' + t2.emoji + ' ' + t1.role + ' ' + t2.role
+    constructor(t1: Team, t2: Team, ping: boolean) {
+        this.event += t1.emoji + ' vs ' + t2.emoji + (ping ? ' ' + t1.role + ' ' + t2.role : '')
     }
 }

@@ -1,18 +1,16 @@
 import { Message, TextChannel } from "discord.js";
 import Database from "../database";
 import DiscordOutput from "../discordOutput";
-import Player from "../sim/player";
 import Series from "../sim/series";
 import TeamFactory from "../sim/teamFactory";
 import ICommand from "./command";
 
-export default class SimCommand implements ICommand {
-    name = 'sim'
-    aliases = ['simulate']
-    usage = 'sim <team 1> <team 2> [games] [delay]'
-    description = 'Simulates a best-of series between the two teams without saving the result.'
+export default class SeriesCommand implements ICommand {
+    name = 'series'
+    aliases = []
+    usage = 'series <team 1> <team 2> [games] [delay]'
+    description = 'Simulates an official series between the two teams'
     minArgs = 2
-
     async execute(message: Message, args: string[]) {
         let factory = new TeamFactory()
         let db = new Database()
@@ -35,8 +33,11 @@ export default class SimCommand implements ICommand {
         if(args[2] == undefined) args[2] = '3'
         if(args[3] == undefined) args[3] = '2500'
 
-        let series = new Series(t1, t2, parseInt(args[2]), false)
+        let series = new Series(t1, t2, parseInt(args[2]), true)
         series.sim()
+        for(let g of series.games) {
+            db.addGame(g, 0);
+        }
         let output = new DiscordOutput()
         output.outputAtInterval(message.channel as TextChannel, series.events, parseInt(args[3]))
     }

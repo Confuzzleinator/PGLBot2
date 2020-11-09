@@ -99,7 +99,7 @@ export default class SeriesSummaryEvent implements IEvent {
                   series.t2.emoji +
                   series.t2.players[2].name +
                   ' - ' +
-                  t2PlayerGoals[2] + 'g/' + t2PlayerAssists[2] + 'a/' + t2PlayerSaves[2] + 'sv/' + t2PlayerShots[0] + 'sh'             
+                  t2PlayerGoals[2] + 'g/' + t2PlayerAssists[2] + 'a/' + t2PlayerSaves[2] + 'sv/' + t2PlayerShots[2] + 'sh'             
               )
     }
 }

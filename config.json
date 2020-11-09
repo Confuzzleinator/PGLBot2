@@ -1,6 +1,6 @@
 {
-    "prefix": ".",
-    "activity": "Vitality OP",
+    "prefix": "!",
+    "activity": "Major Time",
     "game": {
         "doublePlaystylePenalty": 10,
         "triplePlaystylePenalty": 30,
