@@ -3,6 +3,8 @@ import * as Config from '../config.json'
 import 'dotenv/config'
 import CommandHandler from './commands/commandHandler'
 import SimCommand from './commands/simCommand'
+import Database from './database'
+import LoadCommand from './commands/loadCommand'
 
 const client = new Client()
 client.login(process.env.DISCORD_BOT_KEY)
@@ -20,5 +22,7 @@ client.on('message', (message) => {
 
     if(command == 'sim') {
         handler.execute(message, new SimCommand(), args)
+    } else if(command == 'load') {
+        handler.execute(message, new LoadCommand(), args)
     }
 })
