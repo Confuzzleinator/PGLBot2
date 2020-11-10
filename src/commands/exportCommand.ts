@@ -13,8 +13,7 @@ export default class ExportCommand implements ICommand {
         let sheet = new Spreadsheet()
         let db = new Database()
         await sheet.authenticate()
-        sheet.addGames()
-        db.clearGames()
+        await sheet.addGames()
+        await db.clearGames()
     }
-
 }
