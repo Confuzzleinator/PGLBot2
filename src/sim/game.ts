@@ -22,13 +22,11 @@ export default class Game {
     }
 
     sim() : GameResult {
-        
-
-        let t1Odds = game.shotChance + (this.t1.rating - this.t2.rating) * game.ratingDiffMultiplier
-        let t2Odds = game.shotChance + (this.t2.rating - this.t1.rating) * game.ratingDiffMultiplier
+        let t1Odds = game.shotChance + ((this.t1.rating - this.t2.rating) * game.ratingDiffMultiplier)
+        let t2Odds = game.shotChance + ((this.t2.rating - this.t1.rating) * game.ratingDiffMultiplier)
 
         if(t1Odds < game.minShotChance) t1Odds = game.minShotChance
-        if(t2Odds < game.minShotChance) t1Odds = game.minShotChance
+        if(t2Odds < game.minShotChance) t2Odds = game.minShotChance
         let time = game.gameLength
         let simming = true
         while(simming) {

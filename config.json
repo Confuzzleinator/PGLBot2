@@ -1,5 +1,5 @@
 {
-    "prefix": "!",
+    "prefix": ".",
     "activity": "Major Time",
     "game": {
         "doublePlaystylePenalty": 10,
@@ -9,10 +9,22 @@
         "scoreChance": 0.25,
         "saveChance": 0.75,
         "assistChance": 0.5,
-        "ratingDiffMultiplier": 0.00005,
+        "ratingDiffMultiplier": 0.0002,
         "gameLength": 299,
-        "strikerActionProbabilities": [0.1, -0.1, 0],
-        "guardianActionProbabilities": [-0.1, 0, 0.1],
-        "playmakerActionProbabilities": [0, 0.1, -0.1]
+        "strikerActionProbabilities": [
+            0.1,
+            -0.1,
+            0
+        ],
+        "guardianActionProbabilities": [
+            -0.1,
+            0,
+            0.1
+        ],
+        "playmakerActionProbabilities": [
+            0,
+            0.1,
+            -0.1
+        ]
     }
 }
