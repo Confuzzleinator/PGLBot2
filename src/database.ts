@@ -30,7 +30,7 @@ export default class Database {
     })
 
     this.db.on('error', (err) => {
-      console.log('Database error: ' + err.code)
+      console.log('Database Error:' + err.code)
       if (err.code == 'PROTOCOL_CONNECTION_LOST') {
         this.connect()
       } else {

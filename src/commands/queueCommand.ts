@@ -1,16 +1,15 @@
-import { Message, TextChannel } from "discord.js";
-import Database from "../database";
-import DiscordOutput from "../discordOutput";
-import Player from "../sim/player";
-import Series from "../sim/series";
-import TeamFactory from "../sim/teamFactory";
+import { Message } from "discord.js";
 import ICommand from "./command";
+import Queue from "../queue";
+import TeamFactory from "../sim/teamFactory";
+import Database from "../database";
+import Series from "../sim/series";
 
-export default class SimCommand implements ICommand {
-    name = 'sim'
-    aliases = ['simulate']
-    usage = 'sim <team 1> <team 2> [games] [delay]'
-    description = 'Simulates a best-of series between the two teams without saving the result.'
+export default class QueueCommand implements ICommand {
+    name = 'queue'
+    aliases = ['q']
+    usage = 'queue <team1> <team2> [gamesToWin] [outputDelay]'
+    description = 'Adds a game to the queue'
     minArgs = 2
 
     async execute (message: Message, args: string[]) {
@@ -35,10 +34,9 @@ export default class SimCommand implements ICommand {
         if (args[2] == undefined) args[2] = '3'
         if (args[3] == undefined) args[3] = '2500'
 
-        let series = new Series(t1, t2, parseInt(args[2]), false)
-        series.sim()
-        let output = new DiscordOutput()
-        output.outputAtInterval(message.channel as TextChannel, series.events, parseInt(args[3]))
+        let series = new Series(t1, t2, parseInt(args[2]), true)
+        Queue.queue.push(series)
+        message.channel.send("Matchup queued.")
     }
 
 }
